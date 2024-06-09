@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Evaluating scientific problems">
+  <meta name="keywords" content="SciBench">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> SciBench: Evaluating Math Reasoning in Visual Contexts</title>
+
+
+  <link rel="icon" href="./static/images/scibench.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/leaderboard.css">
+
+  <!-- <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_bulma.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script> -->
+  <script type="text/javascript" src="static/js/sort-table.js" defer></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/explorer-index.js"></script>
+  <script src="./static/js/question_card.js"></script>
+
+  <script src="./static/js/leaderboard_testmini.js"></script>  
+  <script src="./data/results/output_folders.js" defer></script>
+  <script src="./data/results/model_scores.js" defer></script>
+
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <!-- <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a> -->
+      <!-- @PAN TODO: consider adding links? -->
+      <!-- <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://chameleon-llm.github.io/">
+            <b>Chameleon</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://scienceqa.github.io/">
+            <b>ScienceQA</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://github.com/OpenGVLab/LLaMA-Adapter">
+            <b>LLaMA-Adapter (V2)</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://promptpg.github.io/">
+            PromptPG
+          </a>
+          <a class="navbar-item" href="https://arxiv.org/abs/2305.12524">
+            TheoremQA
+          </a>
+          <a class="navbar-item" href="https://lila.apps.allenai.org/">
+            Lila
+          </a>
+          <a class="navbar-item" href="https://iconqa.github.io/">
+            IconQA
+          </a>
+          <a class="navbar-item" href="https://lupantech.github.io/inter-gps/">
+            Inter-GPS
+          </a>
+        </div>
+      </div> -->
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title is-bold">
+            <!-- Can insert SciBench logo graphic here -->
+            <!-- <img src="static/images/scibench.png" style="width:1em;vertical-align: middle" alt="Logo"/> -->
+            <span class="scibench" style="vertical-align: middle">SciBench</span>
+            </h1>
+          <h2 class="subtitle is-3 publication-subtitle">
+            Evaluating College-Level Scientific Problem-Solving Abilities of Large Language Models
+          </h2>
+          <div class="is-size-5 publication-authors">
+            <!-- TODO update href with Author links -->
+            <span class="author-block">
+              <a href="">Xiaoxuan Wang</a><sup style="color:#6fbf73;">* 1</sup>,</span>
+            <span class="author-block">
+              <a href="">Ziniu Hu</a><sup style="color:#ed4b82;">* 2</sup>,</span>
+            <span class="author-block">
+              <a href="">Pan Lu</a><sup style="color:#6fbf73;">* 1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Yanqiao Zhu</a><sup style="color:#6fbf73">* 1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Jieyu Zhang</a><sup style="color:#ffac33">3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Satyen Subramaniam</a><sup style="color:#6fbf73">1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Arjun R. Loomba</a><sup style="color:#6fbf73">1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Shichang Zhang</a><sup style="color:#6fbf73;">1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Yizhou Sun</a><sup style="color:#6fbf73">1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Wei Wang</a><sup style="color:#6fbf73">1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup style="color:#6fbf73;">*</sup>Equal Contribution</span><br>
+            <span class="author-block"><sup style="color:#6fbf73;">1</sup>University of California, Los Angeles,</span><br>
+            <span class="author-block"><sup style="color:#ed4b82">2</sup>California Institute of Technology</span>
+            <span class="author-block"><sup style="color:#ffac33">3</sup>University of Washington</span><br>
+            <!-- <span class="paper-block"><b style="color:#f41c1c">ICLR 2024 Oral</b> (85 in 7304, 1.2%)</span> -->
+          </div>
+        
+          <!-- <section> -->
+            <!-- <div class="section" id="org-banners" style="display:fle">
+              <a href="https://www.ucla.edu/" target="_blank" rel="external">
+                  <img class="center-block org-banner" src="static/images/ucla.png" style="height:3em">
+              </a>
+              <a href="https://www.washington.edu/" target="blank" class="ext-link">
+                  <img class="center-block org-banner" src="static/images/uw.png" style="height:3em">
+              </a>
+              <a href="https://www.microsoft.com/en-us/research/" target="_blank" rel="external">
+                  <img class="center-block org-banner" src="static/images/microsoft.png" style="height:3em">
+              </a>
+            </div> -->
+          <!-- </section> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2307.10635.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/mandyyyyii/scibench"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets/xw27/scibench"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <p style="font-size:18px">🤗</p>
+                  </span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+              <!-- Leaderboard Link. -->
+              <span class="link-block">
+                <a href="#leaderboard"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <p style="font-size:18px">🏆</p>
+                  </span>
+                  <span>Leaderboard</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section">
+  <div class="container" style="margin-bottom: 2vh;">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Introduction</h2>
+        <div class="content has-text-justified">
+          <p>Most of the existing Large Language Model (LLM) benchmarks on scientific problem reasoning focus on problems grounded in high school subjects and are confied to elementary algebraic operations. To systematically examine the reasoning capabilities required for solving complex scientific problems, we introduce
+            an expansive benchmark suite <span class="scibench">SciBench</span> for
+            LLMs. 
+          </p>
+          <p>
+            <span class="scibench">SciBench</span> contains a carefully curated
+            dataset featuring a range of collegiate-level scientific problems from mathematics, chemistry, and
+            physics domains. Based on the dataset, we conduct an in-depth benchmarking study of representative open-source and proprietary LLMs with
+            various prompting strategies. The results reveal
+            that the current LLMs fall short of delivering satisfactory performance, with the best overall score
+            of merely <b>48.96%</b>. Furthermore, through a detailed user study, we categorize the errors made
+            by LLMs into ten problem-solving abilities. 
+          </p>
+          <p>  
+            Our
+            analysis indicates that no single prompting strategy significantly outperforms the others and some
+            strategies that demonstrate improvements in certain problem-solving skills could result in declines
+            in other skills. We envision that <span class="scibench">SciBench</span> will
+            catalyze further developments in the reasoning
+            abilities of LLMs, thereby ultimately contributing
+            to scientific research and discovery.</p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</div>
+</section>
+
+<section class="section">
+  <div class="container">
+    
+    <div class="columns is-centered">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3" id="leaderboard">Experimental Results Leaderboard on Textbook Dataset</h2>
+        <div class="content">
+          <div id="textbook_leaderboard"></div>
+          <p style="text-align: left;"> * The table shows the score under the Zero-Shot Setting.<br /> - The GPT models were evaluated on 03/15/2024, which is slightly different from the paper. <br /> - Additional results from other models will be included in the future. </p>
+          <!-- <p style="text-align: left;">Chemistry: atkins, chemmc, quan, matter<br />Physics: fund, class, thermo<br/>Math: diff, stat, calc</p> -->
+
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DATASET SECTION -->
+<section class="hero is-light is-small" id="dataset">
+  <div class="hero-body has-text-centered">
+    <!-- <h1 class="title is-1 scibench"><img src="static/images/scibench.png" style="width:1.0em;vertical-align: middle" alt="Logo"/>SciBench Dataset</h1> -->
+  <h1 class="title is-1 scibench">
+    <!-- <img src="static/images/scibench.png" style="width:1em;vertical-align: middle" alt="Logo"/> -->
+    <span class="scibench" style="vertical-align: middle">SciBench Dataset</span>
+  </h1>
+  </div>
+</section>
+            
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+        <h2 class="title is-3">Overview</h2>
+        <div class="content has-text-justified">
+          <p>
+            <span class="scibench">SciBench</span> is a carefully curated dataset of college-level scientific problems, collected from widely-used textbooks in college-level Chemistry, Physics, and Mathematics courses. Distinct from existing benchmarks, all of the problems are
+            open-ended, free-response questions that demand multi-step
+            reasoning abilities, the understanding of scientific concepts,
+            the retrieval of domain-specific knowledge (e.g., equations
+            and theorems), and complex numeric computation capabilities (e.g., calculus or differential equations). 
+          </p>
+
+          <p>
+            To evaluate the capabilities and analyze the limitations of
+            Large Language Models (LLMs) to solve scientific computing problems, we collect a new dataset consisting of
+            college-level textbooks and course exams in a variety of domains. This section details the dataset construction process.
+          </p>
+          <p>
+            <b>Data selection criteria.</b>Our dataset aims to improve the
+            previous benchmarks by including more challenging problems. Specifically, the selected dataset should fulfill the
+            following requirements:
+          </p>
+          <ul>
+            <li><b>Inclusion of college-level problems.</b>The chosen problems demand a solid understanding of domain-specific
+              knowledge, adept calculation skills, and the ability to
+              perform complex numerical computations.</li>
+            <li><b>Inclusion of detailed solutions.</b>To facilitate a thorough
+              analysis of the limitations of LLMs, detailed solutions
+              should be provided as well, which could facilitate a finergrained examination of the capacity of LLMs to handle
+              complex problem-solving tasks.</li>
+            <li><b>Inclusion of visual elements.</b>In real-world, many scientific problems require the interpretation and integration of
+              both textual and visual information. The included problems should thus contain visual elements (such as figures)
+              in the contexts.</li>
+            <li><b>Inaccessibility in text formats.</b>To ensure an unbiased
+              evaluation, questions should not be readily accessible
+              online and cannot be easily extracted or transformed into
+              text. This aims to mitigate any potential information
+              leakage from the exposure of LLMs to pre-existing online
+              question banks, such as those found in standardized tests
+              like the SAT exams.</li>
+            <li><b>Assessment of advanced problem-solving capabilities.</b>The problems to benchmark should not be confined to
+              basic arithmetic operations like addition and multiplication. Rather, they should enable evaluating the capability
+              of LLMs in performing advanced computations such as
+              calculus and differential equations.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+    
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3">Examples</h2>
+        <p>One example for each <b>textbook</b> from
+          <span class="scibench">SciBench</span></p>
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/fund.png" alt="fund textbook" width="60%"/>
+              <p>fund textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/thermo.png" alt="thermo textbook" width="60%"/>
+              <p>thermo textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/class.png" alt="class textbook" width="60%"/>
+              <p>class textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/quan.png" alt="quan textbook" width="60%"/>
+              <p>quan textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/chemmc.png" alt="chemmc textbook" width="60%"/>
+              <p>chemmc textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/atkins.png" alt="atkins textbook" width="60%"/>
+              <p>atkins textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/matter.png" alt="matter textbook" width="60%"/>
+              <p>matter textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/calc.png" alt="calc textbook" width="60%"/>
+              <p>calc textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/stat.png" alt="stat textbook" width="60%"/>
+              <p>stat textbook</p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/examples/diff.png" alt="diff textbook" width="60%"/>
+              <p>diff textbook</p>
+            </div>
+          </div>
+        </div>
+        <p>One example in <b>visual context</b> from
+          <span class="scibench">SciBench</span></p>
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/img_prob1.jpg" alt="calculus textbook" width="60%"/>
+              <p>calculus textbook</p>
+            </div>
+              </div>
+            <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/img_prob2.jpg" alt="fund textbook" width="60%"/>
+              <p>fund textbook</p>
+            </div>
+            </div>
+          </div>
+
+       </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">BibTeX</h2>
+    <pre><code>@inproceedings{wang2024scibench,
+    author = {Wang, Xiaoxuan and Hu, Ziniu and Lu, Pan and Zhu, Yanqiao and Zhang, Jieyu and Subramaniam, Satyen and Loomba, Arjun R. and Zhang, Shichang and Sun, Yizhou and Wang, Wei},
+    title = {{SciBench: Evaluating College-Level Scientific Problem-Solving Abilities of Large Language Models}},
+    booktitle = {Proceedings of the Forty-First International Conference on Machine Learning},
+    year = {2024},
+    }</code></pre>
+  </div>
+</section>
+
+<section>
+  <div class="section" id="org-banners" style="display:flex">
+    <a href="https://www.ucla.edu/" target="_blank" rel="external">
+        <img class="center-block org-banner" src="static/images/ucla.png">
+    </a>
+    <a href="https://www.washington.edu/" target="blank" class="ext-link">
+        <img class="center-block org-banner" src="static/images/uw.png">
+    </a>
+    <a href="https://www.caltech.edu/" target="_blank" rel="external">
+        <img class="center-block org-banner" src="static/images/caltech.png">
+    </a>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <!-- <div class="container"> -->
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is website adapted from <a href="https://nerfies.github.io/">Nerfies</a>, licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  <!-- </div> -->
+</footer>
+
+</body>
+</html>

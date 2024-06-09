@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Evaluating scientific problems">
+  <meta name="keywords" content="CliBench">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> CliBench: Multifaceted Evaluation of Large Language Models in Clinical Decisions on Diagnoses, Procedures, Lab Tests Orders and Prescriptions </title>
+
+
+  <link rel="icon" href="./static/images/scibench.png">
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/leaderboard.css">
+
+  <!-- <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_bulma.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script> -->
+  <script type="text/javascript" src="static/js/sort-table.js" defer></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/explorer-index.js"></script>
+  <script src="./static/js/question_card.js"></script>
+
+  <script src="./static/js/leaderboard_testmini.js"></script>  
+  <script src="./data/results/output_folders.js" defer></script>
+  <script src="./data/results/model_scores.js" defer></script>
+
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <!-- <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a> -->
+      <!-- @PAN TODO: consider adding links? -->
+      <!-- <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://chameleon-llm.github.io/">
+            <b>Chameleon</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://scienceqa.github.io/">
+            <b>ScienceQA</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://github.com/OpenGVLab/LLaMA-Adapter">
+            <b>LLaMA-Adapter (V2)</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://promptpg.github.io/">
+            PromptPG
+          </a>
+          <a class="navbar-item" href="https://arxiv.org/abs/2305.12524">
+            TheoremQA
+          </a>
+          <a class="navbar-item" href="https://lila.apps.allenai.org/">
+            Lila
+          </a>
+          <a class="navbar-item" href="https://iconqa.github.io/">
+            IconQA
+          </a>
+          <a class="navbar-item" href="https://lupantech.github.io/inter-gps/">
+            Inter-GPS
+          </a>
+        </div>
+      </div> -->
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title is-bold">
+            <!-- Can insert SciBench logo graphic here -->
+            <!-- <img src="static/images/scibench.png" style="width:1em;vertical-align: middle" alt="Logo"/> -->
+            <span class="CliBench" style="vertical-align: middle">CliBench</span>
+            </h1>
+          <h2 class="subtitle is-3 publication-subtitle">
+            Multifaceted Evaluation of Large Language Models in Clinical Decisions on Diagnoses, Procedures, Lab Tests Orders and Prescriptions
+          </h2>
+          <div class="is-size-5 publication-authors">
+            <!-- TODO update href with Author links -->
+            <span class="author-block">
+              <a href="https://derek.ma">Mingyu Derek Ma</a><sup style="color:#6fbf73;"> 1</sup>,</span>
+            <span class="author-block">
+              <a href="https://yecchen.github.io">Chenchen Ye</a><sup style="color:#6fbf73;"> 1</sup>,</span>
+            <span class="author-block">
+              <a href="https://mii.ucla.edu/people/yu-yan/">Yu Yan</a><sup style="color:#ed4b82;"> 2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://mandyyyyii.github.io">Xiaoxuan Wang</a><sup style="color:#6fbf73"> 1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://medschool.ucla.edu/people/peipei-ping-phd">Peipei Ping</a><sup style="color:#ed4b82">2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.uclahealth.org/providers/timothy-chang">Timothy S Chang</a><sup style="color:#ffac33">3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://web.cs.ucla.edu/~weiwang/">Wei Wang</a><sup style="color:#6fbf73">1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup style="color:#6fbf73;">1</sup>Department of Computer Science</span><br>
+            <span class="author-block"><sup style="color:#ed4b82">2</sup>Department of Physiology</span>
+            <span class="author-block"><sup style="color:#ffac33">3</sup>Department of Neurology</span><br>
+            <span class="author-block"></sup>University of California, Los Angeles</span><br>
+            <!-- <span class="paper-block"><b style="color:#f41c1c">ICLR 2024 Oral</b> (85 in 7304, 1.2%)</span> -->
+          </div>
+        
+          <!-- <section> -->
+            <!-- <div class="section" id="org-banners" style="display:fle">
+              <a href="https://www.ucla.edu/" target="_blank" rel="external">
+                  <img class="center-block org-banner" src="static/images/ucla.png" style="height:3em">
+              </a>
+              <a href="https://www.washington.edu/" target="blank" class="ext-link">
+                  <img class="center-block org-banner" src="static/images/uw.png" style="height:3em">
+              </a>
+              <a href="https://www.microsoft.com/en-us/research/" target="_blank" rel="external">
+                  <img class="center-block org-banner" src="static/images/microsoft.png" style="height:3em">
+              </a>
+            </div> -->
+          <!-- </section> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2307.10635.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/CliBench/CliBench"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="#leaderboard"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <p style="font-size:18px">🤗</p>
+                  </span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+              <!-- Leaderboard Link. -->
+              <span class="link-block">
+                <a href="#leaderboard"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <p style="font-size:18px">🏆</p>
+                  </span>
+                  <span>Leaderboard</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section">
+  <div class="container" style="margin-bottom: 2vh;">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Introduction</h2>
+        <div class="content has-text-justified">
+          <p>The integration of Artificial Intelligence (AI), especially Large Language Models (LLMs), into the clinical diagnosis process offers significant potential to improve the efficiency and accessibility of medical care. While LLMs have shown some promise in the medical domain, their application in clinical diagnosis remains underexplored, especially in real-world clinical practice, where highly sophisticated, patient-specific decisions need to be made. Current evaluations of LLMs in this field are often narrow in scope, focusing on specific diseases or specialties and employing simplified diagnostic tasks. 
+          </p>
+          <p>
+            To bridge this gap, we introduce <span class="CliBench">CliBench</span>, a novel benchmark developed from the MIMIC IV dataset, offering a comprehensive and realistic assessment of LLMs' capabilities in clinical diagnosis. This benchmark not only covers diagnosis from a diverse range of medical cases across various specialties but also incorporates tasks of clinical significance: treatment procedure identification, lab test ordering and medication prescriptions. Supported by structured output ontologies, 
+            <span class="CliBench">CliBench</span> enables a precise and multi-granular evaluation, offering an in-depth understanding of LLM's capability on diverse clinical tasks of desired granularity. We conduct a zero-shot evaluation of leading LLMs to assess their proficiency in clinical decision-making. Our preliminary results shed light on the potential and limitations of current LLMs in clinical settings, providing valuable insights for future advancements in LLM-powered healthcare. 
+          </p>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</div>
+</section>
+
+
+<!-- DATASET SECTION -->
+<section class="hero is-light is-small" id="dataset">
+  <div class="hero-body has-text-centered">
+    <!-- <h1 class="title is-1 scibench"><img src="static/images/scibench.png" style="width:1.0em;vertical-align: middle" alt="Logo"/>SciBench Dataset</h1> -->
+  <h1 class="title is-1 CliBench">
+    <!-- <img src="static/images/scibench.png" style="width:1em;vertical-align: middle" alt="Logo"/> -->
+    <span class="CliBench" style="vertical-align: middle">CliBench Dataset</span>
+  </h1>
+  </div>
+</section>
+            
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+        <!-- <h2 class="title is-3">Overview</h2> -->
+        <div class="content has-text-justified">
+
+
+          <p>
+            <b>Task 1: discharge diagnoses</b> Diagnosis is defined as the identification of a disease, condition, or injury based on a patient's health evidence. The task aims to provide a set of diagnoses according to the patient profile, medical record at admission, lab test results within the admission, 
+            radiology results within the admission and history diagnoses. Each diagnosis is represented in the International Classification of Diseases, tenth Revision, Clinical Modification (ICD-10-CM) code or equivalent concepts, which is a coding system used by healthcare providers to classify all diagnoses for claims processing. 
+            The history diagnoses are necessary for completeness because diagnoses made in previous admissions or other service departments might be inherited.
+          </p>
+
+          <p>
+            <b>Task 2: procedures.</b> Procedures are specific courses of action, to be implemented to intervene in the patient's health status.
+            The task aims to identify the first batch of procedure decisions after the patient is admitted. The input contains patient profile and medical record at admission. The expected output is a set of ICD-10-Procedure Coding System or equivalent concepts. 
+            Within a certain admission, procedure decisions, lab test orders and prescriptions can be made at any time, where the later decisions are made while the clinician is aware of outcomes and results of previous procedures or lab tests. It is hard to obtain ground-truth non-initial decisions since the actions can be taken in different temporal orders while only the outcomes of the factual action order are available, which motivates us to predict only the first batch of decisions in terms of time.
+          </p>
+
+          <p>
+            <b>Task 3: lab test orders.</b> With the same input as procedure decisions, the task aims to produce a set of initial lab items after the patient is admitted to facilitate downstream diagnosis and treatment. Each lab item is a unique Logical Observation Identifiers Names and Codes (LOINC) code.
+          </p>
+
+          <p>
+            <b>Task 4: prescriptions.</b> Given the same input as the procedure decisions, the prescription task yields a set of initial medications to be prescribed for the patient after being admitted. Each medication is coded in the Anatomical Therapeutic Chemical (ATC) classification system.
+          </p>
+          
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <section class="section">
+      <div class="container">
+        
+        <div class="columns is-centered">
+          <div class="column is-full has-text-centered content">
+            <h2 class="title is-3" id="leaderboard">Experimental Results Leaderboard</h2>
+            <div class="content">
+              <div id="textbook_leaderboard"></div>
+              <!-- <p style="text-align: left;"> * The table shows the score under the Zero-Shot Setting.<br /> - The GPT models were evaluated on 03/15/2024, which is slightly different from the paper. <br /> - Additional results from other models will be included in the future. </p> -->
+          
+          </div>
+        </div>
+    
+      </div>
+    </section>
+    
+                         
+  
+    
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3">Data Distribution</h2>
+        <!-- <p>One example in <b>visual context</b> from
+          <span class="CliBench">CliBench</span></p> -->
+        <!-- <div id="results-carousel" class="carousel results-carousel"> -->
+          <!-- <div class="box m-5"> -->
+            <div class="content has-text-centered">
+              <img src="static/images/data_distribution.pdf" alt="distribution" width="60%"/>
+              <!-- <p>The data distribution of the evaluation set for the diagnosis decision task.              </p> -->
+            </div>
+              </div>
+          <!-- </div> -->
+
+       <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">BibTeX</h2>
+    <!-- <pre><code>@inproceedings{wang2024scibench,
+    author = {Wang, Xiaoxuan and Hu, Ziniu and Lu, Pan and Zhu, Yanqiao and Zhang, Jieyu and Subramaniam, Satyen and Loomba, Arjun R. and Zhang, Shichang and Sun, Yizhou and Wang, Wei},
+    title = {{SciBench: Evaluating College-Level Scientific Problem-Solving Abilities of Large Language Models}},
+    booktitle = {Proceedings of the Forty-First International Conference on Machine Learning},
+    year = {2024},
+    }</code></pre> -->
+  </div>
+</section>
+
+<section>
+  <div class="section" id="org-banners" style="display:flex">
+    <a href="https://www.ucla.edu/" target="_blank" rel="external">
+        <img class="center-block org-banner" src="static/images/ucla.png">
+    </a>
+    <!-- <a href="https://www.washington.edu/" target="blank" class="ext-link">
+        <img class="center-block org-banner" src="static/images/uw.png">
+    </a>
+    <a href="https://www.caltech.edu/" target="_blank" rel="external">
+        <img class="center-block org-banner" src="static/images/caltech.png">
+    </a> -->
+  </div>
+</section>
+
+
+<footer class="footer">
+  <!-- <div class="container"> -->
+    <div class="content has-text-centered">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is website adapted from <a href="https://nerfies.github.io/">Nerfies</a>, licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  <!-- </div> -->
+</footer>
+
+</body>
+</html>
